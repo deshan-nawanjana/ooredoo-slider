@@ -1,0 +1,49 @@
+/* font face rules */
+
+@font-face {
+    font-family: "Outfit";
+    font-weight: 400;
+    src: url(./assets/fonts/Outfit-Regular.ttf);
+}
+
+@font-face {
+    font-family: "Outfit";
+    font-weight: 500;
+    src: url(./assets/fonts/Outfit-Medium.ttf);
+}
+
+@font-face {
+    font-family: "Outfit";
+    font-weight: 600;
+    src: url(./assets/fonts/Outfit-SemiBold.ttf);
+}
+
+@font-face {
+    font-family: "Outfit";
+    font-weight: 700;
+    src: url(./assets/fonts/Outfit-Bold.ttf);
+}
+
+@font-face {
+    font-family: "Outfit";
+    font-weight: 800;
+    src: url(./assets/fonts/Outfit-ExtraBold.ttf);
+}
+
+@font-face {
+    font-family: "Outfit";
+    font-weight: 900;
+    src: url(./assets/fonts/Outfit-Black.ttf);
+}
+
+@font-face {
+    font-family: "NotoSans";
+    font-weight: 600;
+    src: url(./assets/fonts/NotoSans-SemiBold.ttf);
+}
+
+@font-face {
+    font-family: "Rubik";
+    font-weight: 600;
+    src: url(./assets/fonts/Rubik-SemiBold.ttf);
+}
