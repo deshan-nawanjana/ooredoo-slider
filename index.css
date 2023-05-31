@@ -1,3 +1,17 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0px;
+}
+
+.scroll-space {
+    height: 100vh;
+    background-color: #F4F6F8;
+    padding: 15px;
+}
+
 /* font face rules */
 
 @font-face {
@@ -46,4 +60,11 @@
     font-family: "Rubik";
     font-weight: 600;
     src: url(./assets/fonts/Rubik-SemiBold.ttf);
+}
+
+/* all element rules */
+
+.slide-container * {
+    outline: none;
+    user-select: none;
 }
