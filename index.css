@@ -58,6 +58,12 @@ body {
 
 @font-face {
     font-family: "Rubik";
+    font-weight: 400;
+    src: url(./assets/fonts/Rubik-Regular.ttf);
+}
+
+@font-face {
+    font-family: "Rubik";
     font-weight: 600;
     src: url(./assets/fonts/Rubik-SemiBold.ttf);
 }
@@ -94,6 +100,7 @@ body {
     --mobile-tray-top: calc(var(--mobile-height) * 0.02);
     /* mobile alignments */
     --mobile-center-y: calc(calc(var(--body-height) - var(--mobile-height)) / 2);
+    --mobile-center-y-top: calc(var(--mobile-space) * 0.5);
     --mobile-center-x: calc(calc(100% - var(--mobile-width)) / 2);
     --mobile-left-x: var(--mobile-space);
     --mobile-right-x: calc(100% - var(--mobile-width) - var(--mobile-space));
@@ -125,6 +132,14 @@ body {
     /* scroll card */
     --scard-width: var(--mobile-tray-width);
     --scard-height: calc(calc(758 / 540) * var(--scard-width));
+    /* snap card */
+    --snap-width: var(--mobile-tray-width);
+    --snap-height: var(--mobile-tray-height);
+    --snap-top: calc(var(--mobile-height) * 0.083);
+    --snap-center: calc(calc(100% - var(--snap-width)) / 2);
+    --snap-title-height: calc(var(--body-height) * 0.1);
+    --snap-title-top: calc(var(--body-height) - var(--snap-title-height) * 1.2);
+
 }
 
 @media screen and (min-width: 1330px) {
@@ -271,7 +286,7 @@ body {
 }
 
 .slide-5 .mobile-container {
-    top: var(--mobile-center-y);
+    top: var(--mobile-center-y-top);
     left: var(--mobile-center-x);
 }
 
@@ -698,4 +713,155 @@ body {
 
 .slide-4.step-3 .scroll-card-tray {
     margin-left: calc(var(--scard-width) * -2);
+}
+
+.slide-container.slide-5 .mobile-container {
+    z-index: 15;
+}
+
+.slide-container.slide-5 .mobile-tray {
+    opacity: 0;
+}
+
+.slide-container.slide-5 .mobile-container::after {
+    opacity: 0;
+}
+
+.snap-item {
+    position: absolute;
+    width: var(--snap-width);
+    height: var(--snap-height);
+    top: var(--snap-top);
+    left: var(--snap-center);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    border-radius: calc(var(--snap-width) * 0.05);
+    box-shadow: 0px 0px calc(var(--snap-width) * 0.05) #1113;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.snap-item:hover {
+    box-shadow: 0px 0px calc(var(--snap-width) * 0.08) #1116;
+}
+
+.snap-item.item-1 {
+    z-index: 5;
+}
+
+.snap-item.item-1 { background-image: url(./assets/images/slide_5/snap_1.png); }
+.snap-item.item-2 { background-image: url(./assets/images/slide_5/snap_2.png); }
+.snap-item.item-3 { background-image: url(./assets/images/slide_5/snap_3.png); }
+.snap-item.item-4 { background-image: url(./assets/images/slide_5/snap_4.png); }
+.snap-item.item-5 { background-image: url(./assets/images/slide_5/snap_5.png); }
+.snap-item.item-6 { background-image: url(./assets/images/slide_5/snap_6.png); }
+.snap-item.item-7 { background-image: url(./assets/images/slide_5/snap_7.png); }
+
+.slide-container.step-1 .snap-item.item-1,
+.slide-container.step-2 .snap-item.item-7,
+.slide-container.step-3 .snap-item.item-6,
+.slide-container.step-4 .snap-item.item-5,
+.slide-container.step-5 .snap-item.item-4,
+.slide-container.step-6 .snap-item.item-3,
+.slide-container.step-7 .snap-item.item-2 {
+    left: calc(var(--snap-center) * 1);
+    transform: scale(1);
+    z-index: 5;
+    box-shadow: 0px 0px calc(var(--snap-width) * 0.08) transparent;
+}
+
+.slide-container.step-1 .snap-item.item-2,
+.slide-container.step-2 .snap-item.item-1,
+.slide-container.step-3 .snap-item.item-7,
+.slide-container.step-4 .snap-item.item-6,
+.slide-container.step-5 .snap-item.item-5,
+.slide-container.step-6 .snap-item.item-4,
+.slide-container.step-7 .snap-item.item-3 {
+    left: calc(var(--snap-center) * 1.3);
+    transform: scale(0.9);
+    z-index: 4;
+}
+
+.slide-container.step-1 .snap-item.item-3,
+.slide-container.step-2 .snap-item.item-2,
+.slide-container.step-3 .snap-item.item-1,
+.slide-container.step-4 .snap-item.item-7,
+.slide-container.step-5 .snap-item.item-6,
+.slide-container.step-6 .snap-item.item-5,
+.slide-container.step-7 .snap-item.item-4 {
+    left: calc(var(--snap-center) * 1.6);
+    transform: scale(0.8);
+    z-index: 3;
+}
+
+.slide-container.step-1 .snap-item.item-4,
+.slide-container.step-2 .snap-item.item-3,
+.slide-container.step-3 .snap-item.item-2,
+.slide-container.step-4 .snap-item.item-1,
+.slide-container.step-5 .snap-item.item-7,
+.slide-container.step-6 .snap-item.item-6,
+.slide-container.step-7 .snap-item.item-5 {
+    left: calc(var(--snap-center) * 1.9);
+    transform: scale(0.7);
+    z-index: 2;
+}
+
+.slide-container.step-1 .snap-item.item-5,
+.slide-container.step-2 .snap-item.item-4,
+.slide-container.step-3 .snap-item.item-3,
+.slide-container.step-4 .snap-item.item-2,
+.slide-container.step-5 .snap-item.item-1,
+.slide-container.step-6 .snap-item.item-7,
+.slide-container.step-7 .snap-item.item-6 {
+    left: calc(var(--snap-center) * 0.1);
+    transform: scale(0.7);
+    z-index: 2;
+}
+
+.slide-container.step-1 .snap-item.item-6,
+.slide-container.step-2 .snap-item.item-5,
+.slide-container.step-3 .snap-item.item-4,
+.slide-container.step-4 .snap-item.item-3,
+.slide-container.step-5 .snap-item.item-2,
+.slide-container.step-6 .snap-item.item-1,
+.slide-container.step-7 .snap-item.item-7 {
+    left: calc(var(--snap-center) * 0.4);
+    transform: scale(0.8);
+    z-index: 3;
+}
+
+.slide-container.step-1 .snap-item.item-7,
+.slide-container.step-2 .snap-item.item-6,
+.slide-container.step-3 .snap-item.item-5,
+.slide-container.step-4 .snap-item.item-4,
+.slide-container.step-5 .snap-item.item-3,
+.slide-container.step-6 .snap-item.item-2,
+.slide-container.step-7 .snap-item.item-1 {
+    left: calc(var(--snap-center) * 0.7);
+    transform: scale(0.9);
+    z-index: 4;
+}
+
+
+.snap-title {
+    position: absolute;
+    text-align: center;
+    left: 0px;
+    height: var(--snap-title-height);
+    top: var(--snap-title-top);
+    width: 100%;
+    z-index: 25;
+}
+
+.snap-title-head {
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+.snap-title-foot {
+    text-transform: uppercase;
+    font-weight: 400;
+    font-family: "Rubik";
+    font-size: calc(var(--font-scale) * 0.8);
 }

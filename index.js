@@ -53,6 +53,13 @@ conatiner.addEventListener('click', event => {
         // set next step
         setStep(step)
     }
+    // check for snap card
+    if(target.classList.contains('snap-item')) {
+        // get step on attribute
+        step = parseInt(target.getAttribute('step'))
+        // set next step
+        setStep(step)
+    }
 })
 
 // slides and steps array
