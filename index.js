@@ -57,104 +57,90 @@ conatiner.addEventListener('click', event => {
 
 // slides and steps array
 const steps = [
-    [1, 1],
-    [2, 1],
-    [3, 1], [3, 2], [3, 3],
-    [4, 1], [4, 2], [4, 3],
-    [5, 1]
+    { slide: 1, step: 1 },
+    { slide: 2, step: 1 },
+    { slide: 3, step: 1 },
+    { slide: 3, step: 2 },
+    { slide: 3, step: 3 },
+    { slide: 4, step: 1 },
+    { slide: 4, step: 2 },
+    { slide: 4, step: 3 },
+    { slide: 5, step: 1 }
 ]
 
-// method to set slide
-const setSlider = index => {
-    // check index in steps
-    if (index in steps) {
-        // return if busy or set busy state
-        if (states.busy) { return } else { states.busy = true }
-        // update index
-        states.index = index
-        // set slide by index
-        setSlide(...steps[index])
-        // timeout and release busy state 
-        setTimeout(() => states.busy = false, 600)
-    } else {
-        // deactive slider
-        states.active = false
-        // reset index
-        states.index = null
-    }
-}
+// main ribbon height
+let ribbon = 100
+// wheel height
+let wheel = 600
+// zero delta flag
+let zdelta = false
+// mobile mode flag
+let mobile = false
+// slider active state
+let active = false
+// last step by update
+let last = null
 
-// slide states
-const states = { active: false, index: null, busy: false }
-
-// window on scroll passive listener
-window.addEventListener('wheel', event => {
-    // get wheel direction
-    const direction = event.deltaY > 0 ? 'down' : 'up'
+const updateSlidePosition = loop => {
+    // return in mobile mode
+    if (mobile) { return }
     // get container bound
     const bound = conatiner.getBoundingClientRect()
-    // get container height
-    const height = bound.height
-    // get bound position
-    const position = bound.top < height && bound.top > 0
-        ? 'top' : (bound.top + height) > -600 && (bound.top + height) < 200
-            ? 'bottom' : null
-    // return
-    // method to prevent
-    const prevent = () => {
-        // prevent default(
+    // calculate values
+    const position = bound.top - ribbon
+    const absolute = Math.abs(position)
+    const duration = wheel * steps.length
+    // check bound position
+    if (position < 0 && absolute < duration) {
+        // relocate container position in active
+        conatiner.style.paddingTop = absolute + 'px'
+        // calculate step index from position
+        const index = parseInt(steps.length * absolute / duration)
+        // set slide if available
+        if (index in steps && last !== index) {
+            last = index
+            // get item from steps
+            const item = steps[index]
+            // set slide and step
+            setSlide(item.slide, item.step)
+        }
+        // update active state
+        active = true
+    } else if (absolute > duration) {
+        // complete container position in lower space
+        conatiner.style.paddingTop = duration + 'px'
+        // update active state
+        active = false
+    } else {
+        // reset container position in upper space
+        conatiner.style.paddingTop = '0px'
+        // update active state
+        active = false
+    }
+    // request next frame for loop mood
+    if (loop) { requestAnimationFrame(updateSlidePosition) }
+}
+
+// update slider on scroll
+window.addEventListener('scroll', () => updateSlidePosition(false))
+// start update slider loop on window load
+window.addEventListener('load', () => updateSlidePosition(true))
+
+// none passive wheel event listener
+window.addEventListener('wheel', event => {
+    // update zero delta flag
+    if (event.deltaY === 0) { zdelta = true }
+    // set wheel height by zero delta
+    wheel = zdelta ? 550 : Math.abs(event.deltaY) * 3
+    // check for active state
+    if (active && last !== steps.length - 1) {
+        // set manual scroll position
+        document.documentElement.scrollTop += event.deltaY
+        // prevent default
         event.preventDefault()
         // stop propagation
         event.stopPropagation()
         // return false
         return false
-    }
-
-    // get bound to
-    const top = parseInt(bound.top)
-    // check active state
-    if (states.active && top === 0) {
-        // lock scroll position to container
-        conatiner.scrollIntoView()
-        // check busy state
-        if (states.busy === false) {
-            // set index by direction
-            setSlider(states.index + (direction === 'down' ? 1 : -1))
-        }
-        // return prevent
-        return prevent()
-    } else if (states.active && top !== 0) {
-        // lock scroll position to container
-        conatiner.scrollIntoView()
-        // return prevent
-        return prevent()
-    } else {
-        // check wheel direction and position
-        if (direction === 'down' && position === 'top' && top !== 0) {
-            // set active state
-            states.active = true
-            // lock scroll position to container
-            conatiner.scrollIntoView()
-            // start slider from top
-            setSlider(0)
-            // return prevent
-            return prevent()
-        } else if (direction === 'up' && position === 'bottom' && top !== 0) {
-            // set active state
-            states.active = true
-            // lock scroll position to container
-            conatiner.scrollIntoView()
-            // start slider from bottom
-            setSlider(steps.length - 1)
-            // return prevent
-            return prevent()
-        }
-    }
-    // check active state
-    if (states.active) {
-        // lock scroll position to container
-        conatiner.scrollIntoView()
-        // prevent event
-        return prevent()
     }
 }, { passive: false })
