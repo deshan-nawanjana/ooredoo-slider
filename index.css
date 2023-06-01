@@ -7,9 +7,15 @@ body {
 }
 
 .scroll-space {
-    height: 200vh;
+    height: 100vh;
+    line-height: 100vh;
     background-color: #F4F6F8;
     padding: 15px;
+    text-align: center;
+    font-size: 3vw;
+    font-family: "Outfit";
+    font-weight: 400;
+    user-select: none;
 }
 
 /* font face rules */
