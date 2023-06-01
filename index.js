@@ -131,7 +131,7 @@ window.addEventListener('wheel', event => {
     // update zero delta flag
     if (event.deltaY === 0) { zdelta = true }
     // set wheel height by zero delta
-    wheel = zdelta ? 550 : Math.abs(event.deltaY) * 3
+    wheel = zdelta ? 550 : Math.abs(event.deltaY) * 4
     // check for active state
     if (active && last !== steps.length - 1) {
         // set manual scroll position
