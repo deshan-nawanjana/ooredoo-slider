@@ -47,7 +47,7 @@ conatiner.addEventListener('click', event => {
         setStep(step)
     }
     // check for snap card
-    if(target.classList.contains('snap-item')) {
+    if (target.classList.contains('snap-item')) {
         // get step on attribute
         step = parseInt(target.getAttribute('step'))
         // set next step
@@ -75,7 +75,7 @@ const setSlider = index => {
         // set slide by index
         setSlide(...steps[index])
         // timeout and release busy state 
-        setTimeout(() => states.busy = false, 400)
+        setTimeout(() => states.busy = false, 600)
     } else {
         // deactive slider
         states.active = false
@@ -96,9 +96,10 @@ window.addEventListener('wheel', event => {
     // get container height
     const height = bound.height
     // get bound position
-    const position = bound.top < 900 && bound.top > 100
+    const position = bound.top < height && bound.top > 0
         ? 'top' : (bound.top + height) > -600 && (bound.top + height) < 200
             ? 'bottom' : null
+    // return
     // method to prevent
     const prevent = () => {
         // prevent default(
@@ -108,8 +109,11 @@ window.addEventListener('wheel', event => {
         // return false
         return false
     }
+
+    // get bound to
+    const top = parseInt(bound.top)
     // check active state
-    if (states.active && bound.top === 0) {
+    if (states.active && top === 0) {
         // lock scroll position to container
         conatiner.scrollIntoView()
         // check busy state
@@ -119,14 +123,14 @@ window.addEventListener('wheel', event => {
         }
         // return prevent
         return prevent()
-    } else if (states.active && bound.top !== 0) {
+    } else if (states.active && top !== 0) {
         // lock scroll position to container
         conatiner.scrollIntoView()
         // return prevent
         return prevent()
     } else {
         // check wheel direction and position
-        if (direction === 'down' && position === 'top' && bound.top !== 0) {
+        if (direction === 'down' && position === 'top' && top !== 0) {
             // set active state
             states.active = true
             // lock scroll position to container
@@ -135,7 +139,7 @@ window.addEventListener('wheel', event => {
             setSlider(0)
             // return prevent
             return prevent()
-        } else if (direction === 'up' && position === 'bottom' && bound.top !== 0) {
+        } else if (direction === 'up' && position === 'bottom' && top !== 0) {
             // set active state
             states.active = true
             // lock scroll position to container
