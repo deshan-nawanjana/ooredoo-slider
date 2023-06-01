@@ -1,7 +1,7 @@
 window.addEventListener('click', event => {
     if (event.target.tagName === 'BUTTON') {
         document.querySelector('.slide-container').className =
-        'slide-container ' + event.target.getAttribute('value')
+            'slide-container ' + event.target.getAttribute('value')
     }
 })
 
@@ -10,20 +10,24 @@ const conatiner = document.querySelector('.slide-container')
 
 // method to get slide
 const getSlide = () => {
+    // get class name
+    const name = conatiner.className
     // return calculated slide index
-    return parseInt(conatiner.className[conatiner.className.lastIndexOf('slide-') + 6])
+    return parseInt(name[name.lastIndexOf('slide-') + 6])
 }
 
 // method to get step
 const getStep = () => {
+    // get class name
+    const name = conatiner.className
     // return calculated step index
-    return parseInt(conatiner.className[conatiner.className.lastIndexOf('step-') + 5])
+    return parseInt(name[name.lastIndexOf('step-') + 5])
 }
 
 // method to set slide
-const setSlide = index => {
+const setSlide = (index, step = 1) => {
     // set container class
-    conatiner.className = `slide-container slide-${index} step-1`
+    conatiner.className = `slide-container slide-${index} step-${step}`
 }
 
 // method to set step
@@ -43,10 +47,105 @@ conatiner.addEventListener('click', event => {
         // get next step
         step += target.classList.contains('left') ? -1 : 1
         // reset step if need
-        if(step > 3) { step = 1 }
+        if (step > 3) { step = 1 }
         // reverse step if need
-        if(step < 1) { step = 3 }
+        if (step < 1) { step = 3 }
         // set next step
         setStep(step)
     }
 })
+
+// slides and steps array
+const steps = [
+    [1, 1],
+    [2, 1],
+    [3, 1], [3, 2], [3, 3],
+    [4, 1], [4, 2], [4, 3],
+    [5, 1]
+]
+
+// method to set slide
+const setSlider = index => {
+    // check index in steps
+    if (index in steps) {
+        // return if busy or set busy state
+        if (states.busy) { return } else { states.busy = true }
+        // update index
+        states.index = index
+        // set slide by index
+        setSlide(...steps[index])
+        // timeout and release busy state 
+        setTimeout(() => states.busy = false, 400)
+    } else {
+        // deactive slider
+        states.active = false
+        // reset index
+        states.index = null
+    }
+}
+
+// slide states
+const states = { active: false, index: null, busy: false }
+
+// window on scroll passive listener
+window.addEventListener('wheel', event => {
+    // get wheel direction
+    const direction = event.deltaY > 0 ? 'down' : 'up'
+    // get container bound
+    const bound = conatiner.getBoundingClientRect()
+    // get container height
+    const height = bound.height
+    // get bound position
+    const position = bound.top < 900 && bound.top > 100
+        ? 'top' : (bound.top + height) > -600 && (bound.top + height) < 200
+            ? 'bottom' : null
+    // method to prevent
+    const prevent = () => {
+        // prevent default(
+        event.preventDefault()
+        // stop propagation
+        event.stopPropagation()
+        // return false
+        return false
+    }
+    // check active state
+    if (states.active && bound.top === 0) {
+        // lock scroll position to container
+        conatiner.scrollIntoView()
+        // check busy state
+        if (states.busy === false) {
+            // set index by direction
+            setSlider(states.index + (direction === 'down' ? 1 : -1))
+        }
+        // return prevent
+        return prevent()
+    } else if (states.active && bound.top !== 0) {
+        // lock scroll position to container
+        conatiner.scrollIntoView()
+        // return prevent
+        return prevent()
+    } else {
+        // check wheel direction and position
+        if (direction === 'down' && position === 'top' && bound.top !== 0) {
+            // set active state
+            states.active = true
+            // lock scroll position to container
+            conatiner.scrollIntoView()
+            // start slider from top
+            setSlider(0)
+            // return prevent
+            return prevent()
+        } else if (direction === 'up' && position === 'bottom' && bound.top !== 0) {
+            // set active state
+            states.active = true
+            // lock scroll position to container
+            conatiner.scrollIntoView()
+            // start slider from bottom
+            setSlider(steps.length - 1)
+            // return prevent
+            return prevent()
+        }
+    }
+    // prevent event when active
+    if (states.active) { return prevent() }
+}, { passive: false })
