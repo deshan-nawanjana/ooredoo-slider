@@ -146,6 +146,11 @@ window.addEventListener('wheel', event => {
             return prevent()
         }
     }
-    // prevent event when active
-    if (states.active) { return prevent() }
+    // check active state
+    if (states.active) {
+        // lock scroll position to container
+        conatiner.scrollIntoView()
+        // prevent event
+        return prevent()
+    }
 }, { passive: false })
