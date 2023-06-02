@@ -132,8 +132,15 @@ window.addEventListener('wheel', event => {
     if (event.deltaY === 0) { zdelta = true }
     // set wheel height by zero delta
     wheel = zdelta ? 550 : Math.abs(event.deltaY) * 4
+    // check for mouse wheel input mode
+    if (zdelta === false) {
+        // return if first step and wheel up
+        if (last === 0 && event.deltaY < 0) { return }
+        // return if last step and wheel down
+        if (last === steps.length - 1 && event.deltaY > 0) { return }
+    }
     // check for active state
-    if (active && last !== steps.length - 1) {
+    if (active) {
         // set manual scroll position
         document.documentElement.scrollTop += event.deltaY
         // prevent default
