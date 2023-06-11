@@ -91,7 +91,7 @@ body {
     --mobile-width: calc(calc(585 / 1200) * var(--mobile-height));
 }
 
-@media (orientation: portrait) or (max-width: 1280px) {
+@media (orientation: portrait), (max-width: 1280px) {
     .slider-wrapper {
         display: none;
     }
