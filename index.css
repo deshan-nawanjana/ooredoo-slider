@@ -97,6 +97,10 @@ body {
     }
 }
 
+.slider-wrapper[hidden] {
+    display: none;
+}
+
 .slider-wrapper, .slider-wrapper * {
     user-select: none;
     -webkit-tap-highlight-color: transparent;

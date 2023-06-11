@@ -115,3 +115,9 @@ window.addEventListener('load', updateSlider)
 
 // update silder resize
 window.addEventListener('resize', updateSlider)
+
+// initial wrapper display
+wrapper.removeAttribute('hidden')
+
+// initial slider update
+updateSlider()
